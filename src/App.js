@@ -5,7 +5,8 @@ import './App.css';
 // import MultipleInput from './MultipleInput';
 // import InputSample from './inputSample';
 // import UseRef from './UseRef'
-import UseRefasId from './UseRefasId'
+// import UseRefasId from './UseRefasId'
+import Remove from './Remove'
 import CreateFood from './CreateFood'
 
 
@@ -25,11 +26,12 @@ function App() {
   }
   //여기에 붙여넣고 import에 {useRef추가한다}
   //useState에 담으면 일반배열이 컴포넌트의 상태로써 관리된다.
+  //[update]를위해 객체에 active를 추가한다
   const [food, setFoods] = useState(
     [
-    {id:'1', foodname:'pizza', ingredient:'cheese in topping with tomato and basil'},
-    {id:'2', foodname:'pasta', ingredient:'pasta sauce,noodle,tomato sauce, meatball and basil'},
-    {id:'3', foodname:'gambas', ingredient:'olive oil, shrimp, galic and pepper'}
+    {id:'1', foodname:'pizza', ingredient:'cheese in topping with tomato and basil', active:true},
+    {id:'2', foodname:'pasta', ingredient:'pasta sauce,noodle,tomato sauce, meatball and basil', active:false},
+    {id:'3', foodname:'gambas', ingredient:'olive oil, shrimp, galic and pepper', active:false}
     ]
   )
 
@@ -57,14 +59,28 @@ function App() {
 
   };
   // onCreate();
+  const onRemove = (id) =>{
+    setFoods(food.filter(test => test.id !== id));
+  }
+
+  // [update]
+  const onToggle = id =>{
+    setFoods(food.map(food => food.id === id ? {...food, active: !food.active} : food))
+  }
   return (
     // <InputSample/>
     // <MultipleInput/>
     // <UseRef/>
     // <UserList/>
     <>
-    <CreateFood foodname={foodname} ingredient={ingredient} onChange={onChange} onCreate={onCreate}/>
-    <UseRefasId food={food} />
+    <CreateFood 
+    foodname={foodname} 
+    ingredient={ingredient} 
+    onChange={onChange} 
+    onCreate={onCreate}
+    />
+    {/* <UseRefasId food={food} /> */}
+    <Remove food={food} onRemove={onRemove} onToggle={onToggle}/>
     </>
   )
 }
